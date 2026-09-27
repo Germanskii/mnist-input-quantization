@@ -1,5 +1,6 @@
 # MNIST Input Quantization
 
+[![Checks](https://github.com/Germanskii/mnist-input-quantization/actions/workflows/checks.yml/badge.svg)](https://github.com/Germanskii/mnist-input-quantization/actions/workflows/checks.yml)
 Measure the accuracy and runtime trade-offs of image resizing and pixel quantization in a small PyTorch MLP.
 
 ## Experiment
@@ -15,6 +16,8 @@ Outputs include CSV metrics, training histories, checkpoints and full-test confu
 Python 3.12 was used for local validation. Run commands from the repository root.
 
 ```bash
+git clone https://github.com/Germanskii/mnist-input-quantization.git
+cd mnist-input-quantization
 python -m venv .venv
 # Linux/macOS:
 source .venv/bin/activate
@@ -29,7 +32,7 @@ For the PyTorch projects, the pinned versions reproduce the tested CPU environme
 python -m src.benchmark --epochs 1
 ```
 
-The cleaned Colab/Jupyter experiment is in [`notebooks/experiment.ipynb`](notebooks/experiment.ipynb). To open it locally, install Jupyter separately (`python -m pip install jupyterlab`) and run `jupyter lab`. Command-line runs save figures instead of requiring an interactive window.
+[Open in Colab](https://colab.research.google.com/github/Germanskii/mnist-input-quantization/blob/main/notebooks/experiment.ipynb). The cleaned Colab/Jupyter experiment is in [`notebooks/experiment.ipynb`](notebooks/experiment.ipynb). To open it locally, install Jupyter separately (`python -m pip install jupyterlab`) and run `jupyter lab`. Command-line runs save figures instead of requiring an interactive window.
 
 ## Data
 
@@ -40,8 +43,11 @@ MNIST is downloaded by `torchvision.datasets.MNIST` on the first run into `data/
 Full corrected MNIST training and hardware throughput measurements are pending. See [VALIDATION.md](VALIDATION.md) for exactly what was checked. No historical notebook output is used as evidence for the corrected implementation.
 
 ```bash
+python -m pip install -r requirements-dev.txt
 python -m unittest discover -s tests -v
 ```
+
+GitHub Actions runs the regression tests and validates notebook structure on pushes and pull requests. It does not download training datasets or establish model accuracy.
 
 ## Repository layout
 
@@ -52,3 +58,6 @@ python -m unittest discover -s tests -v
 - `DATA.md`: data access and redistribution notes.
 
 This project was developed from a university Colab experiment and subsequently cleaned up for reproducibility. Generated data, trained weights and local paths are excluded from version control.
+
+
+The portfolio cleanup and packaging used AI-assisted development. The notebooks derive from the original university work; validation limits are documented above.
