@@ -3,6 +3,8 @@
 [![Checks](https://github.com/Germanskii/mnist-input-quantization/actions/workflows/checks.yml/badge.svg)](https://github.com/Germanskii/mnist-input-quantization/actions/workflows/checks.yml)
 Measure the accuracy and runtime trade-offs of image resizing and pixel quantization in a small PyTorch MLP.
 
+**Python · PyTorch · torchvision · pandas · scikit-learn · Matplotlib**
+
 ## Experiment
 
 Three input variants share the same hidden-layer widths: original 28×28 images, resized 16×16 images, and 16×16 images with 16 pixel intensity levels. The first linear layer has fewer parameters for the smaller input. Training uses an 85/15 split of the official training set; evaluation uses the official test set.
@@ -13,7 +15,8 @@ Outputs include CSV metrics, training histories, checkpoints and full-test confu
 
 ## Quick start
 
-Python 3.12 was used for local validation. Run commands from the repository root.
+Use **Python 3.12** for the pinned environment. The October recheck used Python
+3.12.10 on Windows CPU. Run commands from the repository root.
 
 ```bash
 git clone https://github.com/Germanskii/mnist-input-quantization.git
@@ -22,6 +25,7 @@ python -m venv .venv
 # Linux/macOS:
 source .venv/bin/activate
 # Windows PowerShell: .venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 python -m src.benchmark
 ```
@@ -40,7 +44,23 @@ MNIST is downloaded by `torchvision.datasets.MNIST` on the first run into `data/
 
 ## Validation and results
 
-Full corrected MNIST training and hardware throughput measurements are pending. See [VALIDATION.md](VALIDATION.md) for exactly what was checked. No historical notebook output is used as evidence for the corrected implementation.
+On **29 October 2026**, the default CLI completed **12 epochs per variant** on
+real MNIST, using seed **42** and a **51,000 / 9,000 / 10,000** train/validation/test
+split, on Windows / Python 3.12.10 / CPU:
+
+| Input variant | Test accuracy | Parameters |
+| --- | ---: | ---: |
+| Original 28×28 | 96.49% | 39,106 |
+| Resized 16×16 | 95.28% | 13,762 |
+| Resized 16×16, 16 intensity levels | 95.42% | 13,762 |
+
+The smaller input reduces parameter count by changing the first layer. Pixel
+quantization adds no parameter reduction, and the small accuracy difference
+between the two 16×16 variants is not evidence of an improvement from one seed.
+Model-only throughput observations are retained in [docs/results.json](docs/results.json)
+with their timing limits. Other experiments ran concurrently on the same host,
+so those timings should not be treated as stable speedup or deployment estimates.
+See [VALIDATION.md](VALIDATION.md) for the executed checks.
 
 ```bash
 python -m pip install -r requirements-dev.txt
